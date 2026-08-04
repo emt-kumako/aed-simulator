@@ -494,6 +494,7 @@ function correct(msg) {
 let _audioCtx  = null;
 let _beepBuf   = null;
 let _beepReady = false;   // true once decodeAudioData resolves
+let _beepAudio = null;    // HTMLAudioElement — more reliable on iOS after TTS
 const BEEP_B64 = "//t0QAAAAXce1YU1YAIvQ9qwpqwASY5Bb7jZgAEvyC33GzAA/6CBICWBPAPQEIBXAvAE5PIACAAACQfKexhoaMYxjD73/DGU99//D3pm5ufeHgH/QQJASwJ4B6AhAK4C2AFgnpAcAQAkJjXsQNDRjGMY97/hjGPe9//D3pm5ufeHgAAAoAAAEA4DAwHA4HA/9XWTgGOmNDEiAWItAHFYLRnSbzXUr1Jn1vUj9a/+v5xNV///X///2W3////////////////////////////wABgAAAGBgGBAOBwOB/6uskgJWmJoxIgDiLQBxTwWjOk3mr1K9S01vUj9a/+v6n///v///1Lb////////////////////////////4P70AAAQ//t0YAKAAnMoVO8+gAAjYdnw6OQACZTLS6DkS4CYByeQEeCYA3P/qua5s2suq6hUzlRAqgyQAAoHKZh+IXUifSKnDI+o2W60aW1J6KK1O7/r10WW6moVqd/SM1HqCNVQdDBlnxKC4QCiyLdKw1/9pVLxmAZQuqGBTiNbq/rw1bdbsnsGgbSWSNDQPof9QeaerwugAACALe2y5mAA7PKmtvWig1UOkOUQSHmZRuUd+e127vv7/P+d5+8WGIKJ/mqiOcPVhZAMyrowop03zW2zucMQSeiUw996g4GgVb1CVoAADlTcXYVhHcQAAg6hgWI4Djzd/LeFk0QpcG1hIMI/WEsr4oD+1EAAEAt78LM6yGeNNxuigBeJhQaBz3/tXeV+//t0YA4AAisxUmg4EuAvowmkBy84B6jFSaC8S4Djiea0HLDgWb2tZ819vv77/66xUK39uR3Yqs5ByO/VmK/7MsvhChgSKbprbelb+z1htkAADlU+//caN926p5KYnRqcfrUyMFcjocTL1y+8brB8r+1N/No8XE/VsGK2e6r/9gAAApuf8Lwws55tyiL8PQKBPJiE11jUxeuv/95t8b+c0MIBLX+qOZzKu0rfuKMidH9+qBAOHVXu5Nyax6yAAAAAABxygix59fKszxrKgKGI8McwYSMIhcGCuFpc9PT9613HA8ZGjF7uHmpmnf////+9+rZNAMPpAAAAVL/wuw0ckixuQUZgOTAjAIhkiMmx5ki7r6DLZT64QqlT026ToU0y//t0YBYAAe4xUegwEuAwYbm/BRkmCNDNN6DkS4C5Bub0EOSY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";
 
 function _b64ToArrayBuffer(b64) {
@@ -503,61 +504,133 @@ function _b64ToArrayBuffer(b64) {
   return buf.buffer;
 }
 
-// Step 1: create AudioContext + decode buffer.
-// Must be called inside a user-gesture handler (touch/click) so iOS unlocks audio.
-// Returns a Promise so callers can await readiness.
+function _ensureBeepAudio() {
+  if (_beepAudio) return _beepAudio;
+  try {
+    _beepAudio = new Audio('data:audio/mpeg;base64,' + BEEP_B64);
+    _beepAudio.preload = 'auto';
+    _beepAudio.setAttribute('playsinline', 'true');
+  } catch (e) {
+    _beepAudio = null;
+  }
+  return _beepAudio;
+}
+
+// Unlock so later timer beeps are allowed (critical on iOS after TTS).
+function unlockAudio() {
+  const ctxP = initAudio();
+  const el = _ensureBeepAudio();
+  if (el) {
+    try {
+      el.muted = true;
+      el.currentTime = 0;
+      const p = el.play();
+      if (p && p.then) {
+        p.then(() => {
+          el.pause();
+          el.muted = false;
+          el.currentTime = 0;
+        }).catch(() => { el.muted = false; });
+      } else {
+        el.muted = false;
+      }
+    } catch (e) {}
+  }
+  return ctxP;
+}
+
 function initAudio() {
-  if (_audioCtx && _beepReady) return Promise.resolve();
+  _ensureBeepAudio();
+  if (_audioCtx && _beepReady) {
+    return _audioCtx.state === 'suspended' ? _audioCtx.resume().catch(() => {}) : Promise.resolve();
+  }
   if (!_audioCtx) {
     try {
       _audioCtx = new (window.AudioContext || window.webkitAudioContext)();
     } catch(e) { return Promise.resolve(); }
   }
-  // Resume if suspended (iOS background → foreground)
   const resumeP = _audioCtx.state === 'suspended'
-    ? _audioCtx.resume()
+    ? _audioCtx.resume().catch(() => {})
     : Promise.resolve();
   if (_beepReady) return resumeP;
-  // Decode once — Safari needs this inside the gesture call stack
   return resumeP.then(() =>
-    _audioCtx.decodeAudioData(_b64ToArrayBuffer(BEEP_B64))
+    _audioCtx.decodeAudioData(_b64ToArrayBuffer(BEEP_B64).slice(0))
   ).then(buf => {
     _beepBuf   = buf;
     _beepReady = true;
   }).catch(() => {});
 }
 
-// Play one beep. Safe inside setInterval — uses pre-decoded buffer.
-function beep() {
-  if (!_audioCtx || !_beepBuf) return;
-  const doPlay = () => {
-    try {
-      const src = _audioCtx.createBufferSource();
-      src.buffer = _beepBuf;
-      src.connect(_audioCtx.destination);
-      src.start(0);
-    } catch(e) {}
-  };
-  if (_audioCtx.state === 'suspended') {
-    _audioCtx.resume().then(doPlay).catch(() => {});
-  } else {
-    doPlay();
+function _beepOscillator() {
+  if (!_audioCtx) return false;
+  try {
+    const osc = _audioCtx.createOscillator();
+    const gain = _audioCtx.createGain();
+    osc.type = 'sine';
+    osc.frequency.value = 880;
+    gain.gain.value = 0.22;
+    osc.connect(gain);
+    gain.connect(_audioCtx.destination);
+    const t0 = _audioCtx.currentTime;
+    osc.start(t0);
+    gain.gain.exponentialRampToValueAtTime(0.001, t0 + 0.07);
+    osc.stop(t0 + 0.08);
+    return true;
+  } catch (e) {
+    return false;
   }
 }
 
-// Safari suspends AudioContext whenever the page goes to background.
-// Re-resume on visibility restore AND on any touch (belt-and-suspenders).
-document.addEventListener('visibilitychange', () => {
-  if (document.visibilityState === 'visible' && _audioCtx && _audioCtx.state === 'suspended') {
-    _audioCtx.resume().catch(() => {});
+function _beepHtmlAudio() {
+  const el = _ensureBeepAudio();
+  if (!el) return false;
+  try {
+    el.muted = false;
+    el.volume = 1;
+    el.currentTime = 0;
+    const p = el.play();
+    if (p && p.catch) p.catch(() => {});
+    return true;
+  } catch (e) {
+    return false;
   }
-});
-['touchstart','touchend','click'].forEach(evt => {
-  document.addEventListener(evt, () => {
+}
+
+function _beepBuffer() {
+  if (!_audioCtx || !_beepBuf) return false;
+  try {
+    const src = _audioCtx.createBufferSource();
+    src.buffer = _beepBuf;
+    src.connect(_audioCtx.destination);
+    src.start(0);
+    return true;
+  } catch (e) {
+    return false;
+  }
+}
+
+function beep() {
+  const go = () => {
+    if (_beepHtmlAudio()) return;
+    if (_beepBuffer()) return;
+    _beepOscillator();
+  };
+  if (_audioCtx && _audioCtx.state === 'suspended') {
+    _audioCtx.resume().then(go).catch(go);
+  } else {
+    go();
+  }
+}
+
+document.addEventListener('visibilitychange', () => {
+  if (document.visibilityState === 'visible') {
     if (_audioCtx && _audioCtx.state === 'suspended') {
       _audioCtx.resume().catch(() => {});
     }
-  }, { passive: true, capture: true });
+  }
+});
+['touchstart','touchend','click'].forEach(evt => {
+  document.addEventListener(evt, () => { unlockAudio(); }, { passive: true, capture: true });
 });
 
 /* ══════════════════════════════════════════════
@@ -566,7 +639,7 @@ document.addEventListener('visibilitychange', () => {
 // initSpeech is called on every user gesture.
 // It awaits initAudio so _beepBuf is guaranteed ready before first beep.
 async function initSpeech() {
-  await initAudio();
+  await unlockAudio();
   if (speechReady) return;
   if (!('speechSynthesis' in window)) return;
   const w = new SpeechSynthesisUtterance(''); w.volume = 0;
@@ -575,6 +648,7 @@ async function initSpeech() {
   document.getElementById('speechNotice').classList.add('hidden');
 }
 
+let _activeUtterance = null;
 function say(text) {
   if (!('speechSynthesis' in window)) return;
   window.speechSynthesis.cancel();
@@ -583,6 +657,7 @@ function say(text) {
   const voices = window.speechSynthesis.getVoices();
   const v = voices.find(v => v.lang === 'zh-TW') || voices.find(v => v.lang.startsWith('zh'));
   if (v) u.voice = v;
+  _activeUtterance = u;
   window.speechSynthesis.speak(u);
 }
 if ('speechSynthesis' in window) {
@@ -606,8 +681,8 @@ function startMetronome(sec) {
   stopMetronome();
   document.getElementById('cprPanel').classList.add('show');
   const pulse = document.getElementById('cprPulse');
-  // Ensure audio buffer decoded before first tick (critical for Safari)
-  initAudio().then(() => {
+  // Prefer HTMLAudio unlock path; keep AudioContext as fallback (iOS TTS-safe)
+  unlockAudio().then(() => {
     function tick() {
       beep();
       pulse.classList.remove('beat');
@@ -645,22 +720,22 @@ function updateCountdown() {
 
 // Wait for current speech to end, then 500ms pause before first beep
 function scheduleCpr() {
-  if ('speechSynthesis' in window && window.speechSynthesis.speaking) {
-    const u = window.speechSynthesis.utterances
-      ? window.speechSynthesis.utterances[0] : null;
-    // Listen for end of current utterance
-    const onEnd = () => {
-      mainTimeout = setTimeout(() => startMetronome(120), 500);
-    };
-    window.speechSynthesis.addEventListener('end', onEnd, { once: true });
-    // Fallback: if end event never fires within 4s, start anyway
-    mainTimeout = setTimeout(() => {
-      window.speechSynthesis.removeEventListener('end', onEnd);
-      startMetronome(120);
-    }, 4000);
-  } else {
-    // No speech active — start after 500ms
+  let started = false;
+  const begin = () => {
+    if (started) return;
+    started = true;
     mainTimeout = setTimeout(() => startMetronome(120), 500);
+  };
+  if ('speechSynthesis' in window && window.speechSynthesis.speaking && _activeUtterance) {
+    const prev = _activeUtterance.onend;
+    _activeUtterance.onend = (ev) => {
+      if (typeof prev === 'function') prev.call(_activeUtterance, ev);
+      begin();
+    };
+    // Fallback if onend never fires
+    mainTimeout = setTimeout(begin, 4000);
+  } else {
+    begin();
   }
 }
 

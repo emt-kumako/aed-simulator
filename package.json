@@ -1,0 +1,12 @@
+{
+  "name": "aed-simulator",
+  "private": true,
+  "description": "AED 模擬器 — 民眾教學版",
+  "scripts": {
+    "test": "playwright test",
+    "test:ui": "playwright test --ui"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.62.1"
+  }
+}

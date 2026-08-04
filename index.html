@@ -101,7 +101,7 @@ html,body{
 .stp.active .stp-label{color:#1a4499;font-weight:700}
 .ecg-screen{
   background:#060f06;border-radius:clamp(6px,1.2vw,10px);border:2px solid #3a3a3a;
-  padding:clamp(5px,1vw,8px);flex:1;min-height:0;display:flex;flex-direction:column;
+  padding:clamp(5px,1vw,8px);flex:0.85 1 0;min-height:0;display:flex;flex-direction:column;
 }
 .ecg-topbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:3px;flex-shrink:0}
 .ecg-tag{font-size:clamp(8px,1.6vw,11px);color:#4db84d;font-weight:700}
@@ -110,7 +110,7 @@ html,body{
 .rb-vf{background:#d93b3b;color:#fff;display:inline-block}
 .rb-asr{background:#777;color:#fff;display:inline-block}
 .rb-pea{background:#d9850a;color:#fff;display:inline-block}
-canvas#ecg{display:block;width:100%;flex:1;min-height:clamp(50px,10vw,100px)}
+canvas#ecg{display:block;width:100%;flex:1;min-height:clamp(42.5px,8.5vw,85px)}
 .ecg-footer{display:flex;justify-content:space-between;align-items:center;margin-top:3px;flex-shrink:0;gap:8px}
 .ecg-stat{font-size:clamp(8px,1.6vw,11px);color:#3da83d;white-space:nowrap}
 .charge-track{
@@ -162,26 +162,26 @@ canvas#ecg{display:block;width:100%;flex:1;min-height:clamp(50px,10vw,100px)}
   touch-action:manipulation;white-space:nowrap;
 }
 .cpr-stop:active{background:#d93b3b;color:#fff}
-.shock-centre{display:flex;flex-direction:column;align-items:center;flex-shrink:0;gap:2px}
+.shock-centre{display:flex;flex-direction:column;align-items:center;flex:0.15 0 auto;flex-shrink:0;gap:2px}
 .btn-shock-wrap{display:flex;flex-direction:column;align-items:center;gap:2px;opacity:.2;pointer-events:auto;transition:opacity .3s}
 .btn-shock-wrap.active{opacity:1}
 .btn-shock-wrap.active .shock-triangle{animation:shock-glow 1.1s infinite}
 @keyframes shock-glow{0%,100%{filter:drop-shadow(0 0 0px rgba(220,60,0,0))}50%{filter:drop-shadow(0 0 18px rgba(220,60,0,.9))}}
 .btn-shock{
-  width:clamp(84px,18vw,132px);height:clamp(84px,18vw,132px);
+  width:clamp(97px,20.7vw,152px);height:clamp(97px,20.7vw,152px);
   background:none;border:none;padding:0;cursor:pointer;
   display:flex;align-items:center;justify-content:center;
   touch-action:manipulation;-webkit-user-select:none;user-select:none;
 }
 .shock-triangle{display:flex;align-items:center;justify-content:center}
-.btn-shock svg{width:clamp(80px,17.2vw,127px);height:clamp(80px,17.2vw,127px)}
+.btn-shock svg{width:clamp(92px,19.8vw,146px);height:clamp(92px,19.8vw,146px)}
 .btn-shock:active{transform:scale(.93)}
 .tri-bg{fill:#8a1800}
 .tri-mid{fill:#b02200;opacity:.4}
 .tri-bolt{fill:#fff;stroke:#fff;stroke-width:.4;stroke-linejoin:round}
 .btn-shock-wrap.active .tri-bg{fill:#e83000}
 .btn-shock-wrap.active .tri-mid{fill:#ff5520;opacity:.35}
-.shock-label-txt{font-size:clamp(11px,2.2vw,16px);font-weight:900;color:#111;letter-spacing:3px}
+.shock-label-txt{font-size:clamp(13px,2.5vw,18px);font-weight:900;color:#111;letter-spacing:3px}
 .bottom-bar{
   display:flex;gap:clamp(6px,1.5vw,10px);align-items:center;
   justify-content:space-between;flex-shrink:0;
